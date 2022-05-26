@@ -1,4 +1,5 @@
 # Unity-Fantasy-Fight-League
+# Overview 
  Build available on itch.io - https://ryslin.itch.io/fantasy-fight-league
 
  2-Player wizard-themed soccer-style game. Emphasis was placed on visual design with simple fun mechanics.
@@ -7,7 +8,7 @@
 
 
 
- Controls: 
+# Controls: 
 
  P1
 
