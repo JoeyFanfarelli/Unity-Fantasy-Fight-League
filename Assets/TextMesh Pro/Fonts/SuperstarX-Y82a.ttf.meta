@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 13486a766f54b55498ea78d1d1de0a85
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Superstar X
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 3c94c71353a851f4f848351241e9ba58, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
