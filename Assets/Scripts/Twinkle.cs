@@ -9,8 +9,10 @@ public class Twinkle : MonoBehaviour
     public float maxIntensity;
     private float waitTime;
     Light2D myLight;
+
+    //This script handles the fade/twinkle/flicker of the torches.
     
-    // Start is called before the first frame update
+    //Cache reference and begin twinkle coroutine.
     void Start()
     {
         myLight = gameObject.GetComponent<Light2D>();
@@ -18,12 +20,7 @@ public class Twinkle : MonoBehaviour
         StartCoroutine(TwinkleLight()); 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    //Adjust intensity up and down within a min/max range.
     IEnumerator TwinkleLight()
     {
 

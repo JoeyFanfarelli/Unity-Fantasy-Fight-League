@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Player2Controller : MonoBehaviour
+public class Player1Controller : MonoBehaviour
 {
     public float speed;
 
@@ -14,62 +14,64 @@ public class Player2Controller : MonoBehaviour
 
     private Animator anim;
 
-    public GameObject explosion;
+    public GameObject explosion;                
     public GameObject ball;
 
-    private Vector2 explosionDistance;
-    private GameObject instantiatedSpell;
-    private bool spellActive;
+    private Vector2 explosionDistance;          //How far away the explosion spell will be cast
+    private GameObject instantiatedSpell;       //Explosion spell that is instantiated.
+    private bool spellActive;                   //Determines whether or not a spell is currently being cast.
 
     public TextMeshProUGUI blueXPText;
     public TextMeshProUGUI redXPText;
 
 
-    // Start is called before the first frame update
+    //Set defaults and cache references.
     void Start()
     {
-        playerDirection = "right";
+        
+        playerDirection = "right"; 
         spellActive = false;
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal2"), Input.GetAxisRaw("Vertical2"));
+        Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         moveVelocity = moveInput.normalized * speed;
-
+        
+        //flip player sprite depending on move direction.
         if (moveVelocity.x < 0)
         {
-            mySpriteRenderer.flipX = false;
+            mySpriteRenderer.flipX = true;
             playerDirection = "left";
         }
         else if (moveVelocity.x > 0)
         {
-            mySpriteRenderer.flipX = true;
+            mySpriteRenderer.flipX = false;
             playerDirection = "right";
         }
 
-        if (Input.GetButton("ExplosionP2"))
+
+        //See if a spell is already active. If not, calculate where the explosion should occur, and cast it through the "Cast" CoRoutine.
+        if (Input.GetButton("ExplosionP1"))
         {
             if (spellActive == false)
             {
-
-
-
-
+                
                 if (playerDirection == "right")
                 {
-                    explosionDistance = transform.position + transform.right * 8;
+                    explosionDistance = transform.position + transform.right*8;
                 }
                 else if (playerDirection == "left")
                 {
-                    explosionDistance = transform.position + -transform.right * 8;
+                    explosionDistance = transform.position + -transform.right*8;
                 }
-
+                
                 StartCoroutine(Cast("Explosion"));
             }
 
@@ -80,7 +82,7 @@ public class Player2Controller : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (rb.position.y + moveVelocity.y * Time.fixedDeltaTime < 6.5 && rb.position.y + moveVelocity.y * Time.fixedDeltaTime > -6 && rb.position.x + moveVelocity.x * Time.fixedDeltaTime < 15.3 && rb.position.x + moveVelocity.x * Time.fixedDeltaTime > -15.4) //Keep paddle in-bounds
+        if (rb.position.y + moveVelocity.y * Time.fixedDeltaTime < 6.5 && rb.position.y + moveVelocity.y * Time.fixedDeltaTime > -6 && rb.position.x + moveVelocity.x * Time.fixedDeltaTime < 15.3 && rb.position.x + moveVelocity.x * Time.fixedDeltaTime > -15.4)
         {
             rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
         }
@@ -98,33 +100,33 @@ public class Player2Controller : MonoBehaviour
         {
             StartCoroutine(AttackCoroutine());
         }
-    }
 
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Increment score and trigger the coroutine which handles the pain animation.
         if (collision.gameObject.tag == "Explosion")
         {
-            ball.GetComponent<BallController>().blueXP += 20;
-            blueXPText.text = ball.GetComponent<BallController>().blueXP.ToString();
+            ball.GetComponent<BallController>().redXP += 20;
+            redXPText.text = ball.GetComponent<BallController>().redXP.ToString();
             StartCoroutine(Pain());
 
         }
     }
 
-
     IEnumerator AttackCoroutine()
     {
-
         anim.SetBool("isAttacking", true);
         yield return new WaitForSeconds(0.21f);
         anim.SetBool("isAttacking", false);
     }
 
+    //This is set up for future spells via elseif. Right now, it only handles the Explosion. Instantiates, destroys, and handles the spellActive boolean.
     IEnumerator Cast(string spell)
     {
 
-        if (spell == "Explosion")     
+        if (spell == "Explosion")
         {
             instantiatedSpell = Instantiate(explosion, explosionDistance, transform.rotation);
             spellActive = true;
@@ -137,17 +139,14 @@ public class Player2Controller : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
 
-
-
-
     }
 
+    //Triggers the pain animation.
     IEnumerator Pain()
     {
         anim.SetBool("inPain", true);
         yield return new WaitForSeconds(2);
         anim.SetBool("inPain", false);
     }
-
 
 }
